@@ -30,8 +30,6 @@ export const dynamodbCache: FastifyPluginCallback<PluginOptions> = (
     tableName: opts.tableName,
   });
 
-  fastify.decorate("cache", { enabled: false });
-
   fastify.addHook("onRoute", (routeOptions) => {
     if (routeOptions.config && routeOptions.config.cacheEnabled === true) {
       if (!routeOptions.onRequest) {

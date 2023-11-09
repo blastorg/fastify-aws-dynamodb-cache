@@ -12,8 +12,9 @@ const fastify = Fastify({
 fastify
   .register(dynamodbCache, {
     dynamoDbRegion: "eu-central-1",
-    tableName: "fastify-dynamodb-cache",
     dynamoDbAddress: "http://localhost:8000",
+    tableName: "fastify-dynamodb-cache",
+    defaultTTL: 30,
   })
   .register(fastifySwagger, {
     openapi: {

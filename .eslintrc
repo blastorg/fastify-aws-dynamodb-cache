@@ -1,5 +1,4 @@
 {
-  "extends": ["@blastorg/eslint-config-blast/ts-config"],
   "settings": {
     "import/resolver": {
       "node": {

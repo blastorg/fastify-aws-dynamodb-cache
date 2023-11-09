@@ -25,7 +25,10 @@ export const createOnRequestHook = ({
       const { Item } = await dynamoClient.send(command);
 
       if (Item) {
-        if (parseInt(Item["ttl"].N || "0") > new Date().getTime()) {
+        if (
+          parseInt(Item["ttl"].N || "0") >
+          Math.floor(new Date().getTime() / 1000)
+        ) {
           reply.header("x-cache", Item["ttl"].N || 0);
           reply.header("content-type", "application/json");
           return reply.status(200).send(JSON.parse(Item["data"].S || "{}"));

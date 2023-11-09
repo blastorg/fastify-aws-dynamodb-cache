@@ -16,12 +16,12 @@ export const createOnSendHook = ({
     payload: unknown
   ) => {
     if (reply.getHeader("x-cache") === "miss") {
-      const ttl = new Date().getTime() + 300000;
+      const expiration = Math.floor(new Date().getTime() / 1000) + 30; // 30 Seconds
       const command = new PutItemCommand({
         TableName: tableName,
         Item: {
           path: { S: request.url },
-          ttl: { N: ttl.toString() },
+          ttl: { N: expiration.toString() },
           data: { S: JSON.stringify(payload, undefined, 0) },
         },
       });

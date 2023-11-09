@@ -1,5 +1,5 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { FastifyPluginAsync, FastifyPluginCallback } from "fastify";
+import { FastifyPluginAsync } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 import { createOnRequestHook } from "./hooks/onRequest";
 import { createOnSendHook } from "./hooks/onSend";
@@ -21,7 +21,11 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
   });
 
   fastify.addHook("onRoute", (routeOptions) => {
-    if (routeOptions.config && routeOptions.config.cacheEnabled === true) {
+    if (
+      routeOptions.config &&
+      routeOptions.config.cache &&
+      routeOptions.config.cache.cacheEnabled === true
+    ) {
       const onRequestHook = createOnRequestHook({
         dynamoClient,
         tableName: opts.tableName,
@@ -30,7 +34,7 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
       const onSendHook = createOnSendHook({
         dynamoClient,
         tableName: opts.tableName,
-        ttlSeconds: routeOptions.config.ttl || opts.defaultTTL, // Defaults to "defaultTTL" which is specified when registering the plugin
+        ttlSeconds: routeOptions.config.cache.ttl || opts.defaultTTL, // Defaults to "defaultTTL" which is specified when registering the plugin
       });
 
       if (!routeOptions.onRequest) {
@@ -57,8 +61,10 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
 
 declare module "fastify" {
   interface FastifyContextConfig {
-    cacheEnabled?: boolean;
-    ttl?: number;
+    cache?: {
+      cacheEnabled?: boolean;
+      ttl?: number;
+    };
   }
 }
 

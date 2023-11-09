@@ -39,7 +39,7 @@ export const createOnRequestHook = ({
         reply.header("x-cache", "miss");
       }
     } catch (error) {
-      request.log.fatal(error, "Cache query error");
+      request.log.error(error, "Cache query error");
       reply.header("x-cache", "miss");
     }
 

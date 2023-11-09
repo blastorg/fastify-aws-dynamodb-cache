@@ -6,8 +6,9 @@ import { createOnSendHook } from "./hooks/onSend";
 
 export interface PluginOptions {
   dynamoDbRegion: string;
-  tableName: string;
   dynamoDbAddress?: string;
+  tableName: string;
+  defaultTTL: number;
 }
 
 export const dynamodbCache: FastifyPluginCallback<PluginOptions> = (
@@ -20,18 +21,19 @@ export const dynamodbCache: FastifyPluginCallback<PluginOptions> = (
     region: opts.dynamoDbRegion,
   });
 
-  const onRequestHook = createOnRequestHook({
-    dynamoClient,
-    tableName: opts.tableName,
-  });
-
-  const onSendHook = createOnSendHook({
-    dynamoClient,
-    tableName: opts.tableName,
-  });
-
   fastify.addHook("onRoute", (routeOptions) => {
     if (routeOptions.config && routeOptions.config.cacheEnabled === true) {
+      const onRequestHook = createOnRequestHook({
+        dynamoClient,
+        tableName: opts.tableName,
+      });
+
+      const onSendHook = createOnSendHook({
+        dynamoClient,
+        tableName: opts.tableName,
+        ttlSeconds: routeOptions.config.ttl || opts.defaultTTL, // Defaults to "defaultTTL" which is specified when registering the plugin
+      });
+
       if (!routeOptions.onRequest) {
         routeOptions.onRequest = [onRequestHook];
       }
@@ -59,6 +61,7 @@ export const dynamodbCache: FastifyPluginCallback<PluginOptions> = (
 declare module "fastify" {
   interface FastifyContextConfig {
     cacheEnabled?: boolean;
+    ttl?: number;
   }
 }
 

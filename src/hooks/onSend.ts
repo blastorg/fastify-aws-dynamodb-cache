@@ -4,11 +4,13 @@ import { onSendHookHandler, FastifyRequest, FastifyReply } from "fastify";
 interface CreateOnSendHookOptions {
   dynamoClient: DynamoDBClient;
   tableName: string;
+  ttlSeconds: number;
 }
 
 export const createOnSendHook = ({
   dynamoClient,
   tableName,
+  ttlSeconds,
 }: CreateOnSendHookOptions) => {
   const onSendHandler: onSendHookHandler = async (
     request: FastifyRequest,
@@ -16,7 +18,7 @@ export const createOnSendHook = ({
     payload: unknown
   ) => {
     if (reply.getHeader("x-cache") === "miss") {
-      const expiration = Math.floor(new Date().getTime() / 1000) + 30; // 30 Seconds
+      const expiration = Math.floor(new Date().getTime() / 1000) + ttlSeconds; // TTL in seconds
       const command = new PutItemCommand({
         TableName: tableName,
         Item: {

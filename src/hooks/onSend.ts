@@ -10,11 +10,10 @@ export const createOnSendHook = ({
   dynamoClient,
   tableName,
 }: CreateOnSendHookOptions) => {
-  const onSendHandler: onSendHookHandler = (
+  const onSendHandler: onSendHookHandler = async (
     request: FastifyRequest,
     reply: FastifyReply,
-    payload: unknown,
-    done
+    payload: unknown
   ) => {
     if (reply.getHeader("x-cache") === "miss") {
       const ttl = new Date().getTime() + 300000;
@@ -27,18 +26,13 @@ export const createOnSendHook = ({
         },
       });
 
-      dynamoClient
-        .send(command)
-        .then(() => {
-          done();
-        })
-        .catch((err) => {
-          request.log.fatal(err, "Caching new values failed.");
-          done();
-        });
+      try {
+        await dynamoClient.send(command);
+      } catch (error) {
+        request.log.fatal(error, "Caching new values failed.");
+      }
     }
-
-    done();
+    return;
   };
 
   return onSendHandler;

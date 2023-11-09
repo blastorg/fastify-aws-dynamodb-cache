@@ -10,10 +10,9 @@ export const createOnRequestHook = ({
   dynamoClient,
   tableName,
 }: CreateOnRequestHookOptions) => {
-  const onRequestHook: onRequestHookHandler = (
+  const onRequestHook: onRequestHookHandler = async (
     request: FastifyRequest,
-    reply: FastifyReply,
-    done
+    reply: FastifyReply
   ) => {
     const command = new GetItemCommand({
       TableName: tableName,
@@ -22,28 +21,26 @@ export const createOnRequestHook = ({
       },
     });
 
-    dynamoClient
-      .send(command)
-      .then(({ Item }) => {
-        if (Item) {
-          if (parseInt(Item["ttl"].N || "0") > new Date().getTime()) {
-            void reply.header("x-cache", Item["ttl"].N || 0);
-            void reply.header("content-type", "application/json");
-            void reply.status(200).send(JSON.parse(Item["data"].S || "{}"));
-            done();
-          }
-          void reply.header("x-cache", "miss");
-          done();
+    try {
+      const { Item } = await dynamoClient.send(command);
+
+      if (Item) {
+        if (parseInt(Item["ttl"].N || "0") > new Date().getTime()) {
+          reply.header("x-cache", Item["ttl"].N || 0);
+          reply.header("content-type", "application/json");
+          return reply.status(200).send(JSON.parse(Item["data"].S || "{}"));
         } else {
-          void reply.header("x-cache", "miss");
-          done();
+          reply.header("x-cache", "miss");
         }
-      })
-      .catch((error) => {
-        request.log.fatal(error, "Cache query error");
-        void reply.header("x-cache", "miss");
-        done();
-      });
+      } else {
+        reply.header("x-cache", "miss");
+      }
+    } catch (error) {
+      request.log.fatal(error, "Cache query error");
+      reply.header("x-cache", "miss");
+    }
+
+    return;
   };
 
   return onRequestHook;

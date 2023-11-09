@@ -1,5 +1,5 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { FastifyPluginCallback } from "fastify";
+import { FastifyPluginAsync, FastifyPluginCallback } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 import { createOnRequestHook } from "./hooks/onRequest";
 import { createOnSendHook } from "./hooks/onSend";
@@ -11,10 +11,9 @@ export interface PluginOptions {
   defaultTTL: number;
 }
 
-export const dynamodbCache: FastifyPluginCallback<PluginOptions> = (
+export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
   fastify,
-  opts,
-  done
+  opts
 ) => {
   const dynamoClient = new DynamoDBClient({
     endpoint: opts.dynamoDbAddress,
@@ -54,8 +53,6 @@ export const dynamodbCache: FastifyPluginCallback<PluginOptions> = (
       }
     }
   });
-
-  done();
 };
 
 declare module "fastify" {

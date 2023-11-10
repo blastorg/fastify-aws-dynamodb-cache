@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.0.0...v1.0.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* **ci:** commit to force a new version update ([39fabc1](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/39fabc1385455cf3008841064d1f22c259056312))
+
 # 1.0.0 (2023-11-10)
 
 

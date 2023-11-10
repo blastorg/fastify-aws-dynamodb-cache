@@ -15,6 +15,7 @@ fastify
     dynamoDbAddress: "http://localhost:8000",
     tableName: "fastify-dynamodb-cache",
     defaultTTLSeconds: 30,
+    disableCache: false, // Cache is enabled
   })
   .register(fastifySwagger, {
     openapi: {

@@ -14,5 +14,5 @@
     "declaration": true /* Generate .d.ts files for every TypeScript or JavaScript file inside your project. */
   },
   "extends": "@tsconfig/node18/tsconfig.json",
-  "exclude": ["node_modules", "lib", "tests", "integration"]
+  "exclude": ["node_modules", "lib", "tests", "local_testing"]
 }

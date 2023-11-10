@@ -8,7 +8,7 @@ export interface PluginOptions {
   dynamoDbRegion: string;
   dynamoDbAddress?: string;
   tableName: string;
-  defaultTTL: number;
+  defaultTTLSeconds: number;
 }
 
 export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
@@ -34,7 +34,8 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
       const onSendHook = createOnSendHook({
         dynamoClient,
         tableName: opts.tableName,
-        ttlSeconds: routeOptions.config.cache.ttl || opts.defaultTTL, // Defaults to "defaultTTL" which is specified when registering the plugin
+        ttlSeconds:
+          routeOptions.config.cache.ttlSeconds || opts.defaultTTLSeconds, // Defaults to "defaultTTLSeconds" which is specified when registering the plugin
       });
 
       if (!routeOptions.onRequest) {
@@ -63,7 +64,7 @@ declare module "fastify" {
   interface FastifyContextConfig {
     cache?: {
       cacheEnabled?: boolean;
-      ttl?: number;
+      ttlSeconds?: number;
     };
   }
 }

@@ -14,7 +14,7 @@ fastify
     dynamoDbRegion: "eu-central-1",
     dynamoDbAddress: "http://localhost:8000",
     tableName: "fastify-dynamodb-cache",
-    defaultTTL: 30,
+    defaultTTLSeconds: 30,
   })
   .register(fastifySwagger, {
     openapi: {

@@ -19,7 +19,7 @@ export const usersRoutes: FastifyPluginAsync = async function (fastify) {
       config: {
         cache: {
           cacheEnabled: true,
-          ttl: 10,
+          ttlSeconds: 10,
         },
       },
       schema: {

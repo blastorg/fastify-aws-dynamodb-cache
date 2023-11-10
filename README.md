@@ -38,7 +38,7 @@ const fastify = Fastify().register(dynamodbCache, {
   dynamoDbRegion: "", // AWS region of your choice.
   dynamoDbAddress: "http://localhost:8000", // Optional! If you are hosting your own instance of Dynamo (locally or cloud), then specify the ip address of the database here.
   tableName: "fastify-dynamodb-cache", // DynamoDB table name
-  defaultTTL: 30, // Default TTL (seconds), which would be used if no TTL is specified on the endpoint.
+  defaultTTLSeconds: 30, // Default TTL (seconds), which would be used if no TTL is specified on the endpoint.
 });
 
 fastify.get(
@@ -48,7 +48,7 @@ fastify.get(
       config: {
         cache: {
           cacheEnabled: true, // Set to true if endpoint responses should be cached. If you don't want to cache responses set it to false, or don't specify it.
-          ttl: 10, // Optional! TTL on the cached value
+          ttlSeconds: 10, // Optional! TTL on the cached value
         },
       },
     },

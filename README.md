@@ -40,6 +40,7 @@ const fastify = Fastify().register(dynamodbCache, {
   dynamoDbAddress: "http://localhost:8000", // Optional! If you are hosting your own instance of Dynamo (locally or cloud), then specify the ip address of the database here.
   tableName: "fastify-dynamodb-cache", // DynamoDB table name
   defaultTTLSeconds: 30, // Default TTL (seconds), which would be used if no TTL is specified on the endpoint.
+  disableCache: true, // Optional! If you want to disable caching from being set on endpoints, you can set this to true. Set it to false or leave it empty to enable cache.
 });
 
 fastify.get(

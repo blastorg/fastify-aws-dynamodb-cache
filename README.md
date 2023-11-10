@@ -1,6 +1,7 @@
 # fastify-aws-dynamodb-cache
 
 [![build & release](https://github.com/blastorg/fastify-aws-dynamodb-cache/actions/workflows/release.yaml/badge.svg)](https://github.com/blastorg/fastify-aws-dynamodb-cache/actions/workflows/release.yaml)
+![package downloads](https://img.shields.io/npm/v/%40blastorg/fastify-aws-dynamodb-cache)
 
 Package containing AWS DynamoDB caching plugin, which you can use to use DynamoDB to cache your API responses.
 

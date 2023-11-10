@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.0.1...v1.1.0) (2023-11-10)
+
+
+### Features
+
+* **plugin:** adds option to disable cache on plugin register ([b350458](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/b350458053980041178bc04b24cb491f7ce13928))
+
 ## [1.0.1](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.0.0...v1.0.1) (2023-11-10)
 
 

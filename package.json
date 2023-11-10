@@ -7,14 +7,7 @@
     "lib/**/*"
   ],
   "publishConfig": {
-    "@blastorg:registry": "https://npm.pkg.github.com"
-  },
-  "release": {
-    "branches": [
-      {
-        "name": "main"
-      }
-    ]
+    "access": "public"
   },
   "scripts": {
     "pack:local": "npm run build && npm pack",

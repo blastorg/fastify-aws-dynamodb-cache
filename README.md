@@ -17,7 +17,7 @@ Then you need a DynamoDB table set up in your region of choice with the structur
 
 This partition key is used to index the different endpoints which cache is enabled for. This enables the database to do 1:1 lookups, so it runs as fast as possible.
 
-You can also see how we are setting up the table in the `/test/setupDatabase.sh` script, which sets up a locally DynamoDB instance and creates the table inside of the instance.
+You can also see how we are setting up the table in the `/local_testing/setupDatabase.sh` script, which sets up a locally DynamoDB instance and creates the table inside of the instance.
 
 ## Usage
 
@@ -92,7 +92,7 @@ This repository contains two projects. One for the source code itself, and the o
 
 To build the package/plugin you need to be in the root directory: `fastify-aws-dynamodb-cache` and afterwards can you run the NPM script `npm run pack:local`. You'll need to install the different modules, for the source code. You can do this via npm: `npm install`, when you are in the root directory.
 
-To then install the package and run the test server, you can change directory _cd_ into the `test` folder, where you can run the NPM script `npm run start`. This installs the package which is packaged in a `.tgz` file in the root directory.
+To then install the package and run the test server, you can change directory _cd_ into the `local_testing` folder, where you can run the NPM script `npm run start`. This installs the package which is packaged in a `.tgz` file in the root directory.
 
 After you have changed something in the package again, you'll need to run both `npm run pack:local` and then `npm run start`, to see the latest changes you have made.
 

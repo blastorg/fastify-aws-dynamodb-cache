@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.1.0...v1.1.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* **build:** ignores integration and tests folder in tsconfig ([a08c852](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/a08c8525d76cdfdd5c87455886451ee54f12b5f1))
+
 # [1.1.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.0.1...v1.1.0) (2023-11-10)
 
 

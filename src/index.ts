@@ -9,6 +9,7 @@ export interface PluginOptions {
   dynamoDbAddress?: string;
   tableName: string;
   defaultTTLSeconds: number;
+  disableCache?: boolean;
 }
 
 export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
@@ -22,9 +23,10 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
 
   fastify.addHook("onRoute", (routeOptions) => {
     if (
-      routeOptions.config &&
-      routeOptions.config.cache &&
-      routeOptions.config.cache.cacheEnabled === true
+      !opts.disableCache && // Only add cache to route if plugin setting "disableCache" is false or undefined
+      routeOptions.config && // Check if route config object is set
+      routeOptions.config.cache && // Check if route config cache object is set
+      routeOptions.config.cache.cacheEnabled === true // Check if cache object contains "cacheEnabled" property and that is true
     ) {
       const onRequestHook = createOnRequestHook({
         dynamoClient,

@@ -1,0 +1,29 @@
+{
+  "name": "fastify-aws-dynamodb-cache-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run package:install && dotenv tsx watch ./src/index.ts | pino-pretty",
+    "package:install": "npm install ../*.tgz"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.6.2",
+    "dotenv-cli": "^7.3.0",
+    "pino-pretty": "^10.2.0",
+    "rimraf": "^5.0.1",
+    "tsx": "^3.12.10",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@blastorg/fastify-aws-dynamodb-cache": "file:../blastorg-fastify-aws-dynamodb-cache-1.0.0.tgz",
+    "@fastify/swagger": "^8.10.0",
+    "@fastify/swagger-ui": "^1.9.3",
+    "fastify": "^4.23.2",
+    "fastify-type-provider-zod": "^1.1.9",
+    "zod": "^3.22.2"
+  }
+}

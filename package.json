@@ -1,0 +1,68 @@
+{
+  "name": "@blastorg/fastify-aws-dynamodb-cache",
+  "version": "1.0.0",
+  "description": "Package containing logic to cache endpoint responses in DynamoDB.",
+  "main": "./lib/index.js",
+  "files": [
+    "lib/**/*"
+  ],
+  "publishConfig": {
+    "@blastorg:registry": "https://npm.pkg.github.com"
+  },
+  "release": {
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  },
+  "scripts": {
+    "pack:local": "npm run build && npm pack",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf lib && tsc",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blastorg/fastify-aws-dynamodb-cache.git"
+  },
+  "keywords": [
+    "aws",
+    "dynamodb",
+    "cache",
+    "fastify",
+    "blastorg"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blastorg/fastify-aws-dynamodb-cache/issues"
+  },
+  "homepage": "https://github.com/blastorg/fastify-aws-dynamodb-cache#readme",
+  "peerDependencies": {
+    "fastify": ">=3.0",
+    "@aws-sdk/client-dynamodb": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^11.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.0.6",
+    "@semantic-release/release-notes-generator": "^12.0.0",
+    "@tsconfig/node18": "^18.2.2",
+    "@types/node": "^20.6.2",
+    "eslint": "^8.49.0",
+    "fastify": "^4.23.2",
+    "husky": "^8.0.3",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.415.0",
+    "fastify-plugin": "^4.5.1"
+  }
+}

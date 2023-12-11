@@ -47,11 +47,9 @@ fastify.get(
   "/",
   {
     config: {
-      config: {
-        cache: {
-          cacheEnabled: true, // Set to true if endpoint responses should be cached. If you don't want to cache responses set it to false, or don't specify it.
-          ttlSeconds: 10, // Optional! TTL on the cached value
-        },
+      cache: {
+        cacheEnabled: true, // Set to true if endpoint responses should be cached. If you don't want to cache responses set it to false, or don't specify it.
+        ttlSeconds: 10, // Optional! TTL on the cached value
       },
     },
     schema: {},

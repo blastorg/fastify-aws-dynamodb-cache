@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.1.1...v1.1.2) (2024-03-06)
+
+
+### Bug Fixes
+
+* **cached responses:** only cache successful responses ([b2885bc](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/b2885bcb90bb4a61a8ed0f65fbcdbf1291985077))
+
 ## [1.1.1](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.1.0...v1.1.1) (2023-11-10)
 
 

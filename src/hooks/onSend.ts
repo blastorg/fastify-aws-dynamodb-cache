@@ -17,7 +17,7 @@ export const createOnSendHook = ({
     reply: FastifyReply,
     payload: unknown
   ) => {
-    if (reply.getHeader("x-cache") === "miss") {
+    if (reply.getHeader("x-cache") === "miss" && reply.statusCode === 200) {
       const expiration = Math.floor(new Date().getTime() / 1000) + ttlSeconds; // TTL in seconds
       const command = new PutItemCommand({
         TableName: tableName,

@@ -1,6 +1,6 @@
 {
   "name": "@blastorg/fastify-aws-dynamodb-cache",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Package containing logic to cache endpoint responses in DynamoDB.",
   "main": "./lib/index.js",
   "files": [
@@ -13,7 +13,7 @@
     "pack:local": "npm run build && npm pack",
     "build": "rimraf lib && tsc",
     "test": "jest",
-    "lint": "eslint ./src --ext .ts",
+    "lint": "eslint ./src",
     "lint:fix": "eslint . --ext .ts --fix",
     "prepare": "husky"
   },
@@ -36,34 +36,34 @@
   "homepage": "https://github.com/blastorg/fastify-aws-dynamodb-cache#readme",
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": ">=3.0.0",
-    "fastify": ">=3.0"
+    "fastify": ">=5"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.7.1",
-    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/compat": "^1.2.4",
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^11.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^9.0.6",
-    "@semantic-release/release-notes-generator": "^12.0.0",
-    "@tsconfig/node18": "^18.2.2",
-    "@types/jest": "^29.5.8",
-    "@types/node": "^20.6.2",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "@typescript-eslint/parser": "^6.10.0",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.1",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.1",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.49.0",
-    "fastify": "^4.23.2",
+    "eslint": "^9.16.0",
+    "fastify": "^5.1.0",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
-    "rimraf": "^5.0.1",
-    "semantic-release-export-data": "^1.0.1",
-    "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "rimraf": "^6.0.1",
+    "semantic-release-export-data": "^1.1.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": ">=3.0.0",
-    "fastify-plugin": "^4.5.1"
+    "fastify-plugin": "^5.0.1"
   },
   "config": {
     "commitizen": {

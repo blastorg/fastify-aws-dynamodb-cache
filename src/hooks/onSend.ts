@@ -1,5 +1,6 @@
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { onSendHookHandler, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyRequest, FastifyReply } from "fastify";
+import { onSendAsyncHookHandler } from "fastify/types/hooks";
 
 interface CreateOnSendHookOptions {
   dynamoClient: DynamoDBClient;
@@ -12,7 +13,7 @@ export const createOnSendHook = ({
   tableName,
   ttlSeconds,
 }: CreateOnSendHookOptions) => {
-  const onSendHandler: onSendHookHandler = async (
+  const onSendHandler: onSendAsyncHookHandler = async (
     request: FastifyRequest,
     reply: FastifyReply,
     payload: unknown
@@ -34,7 +35,6 @@ export const createOnSendHook = ({
         request.log.fatal(error, "Caching new values failed.");
       }
     }
-    return;
   };
 
   return onSendHandler;

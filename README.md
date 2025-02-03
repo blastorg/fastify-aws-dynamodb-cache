@@ -7,7 +7,7 @@ Package containing AWS DynamoDB caching plugin, which you can use to use DynamoD
 
 ## Requirements
 
-In order to install this package you need at lease Node version 18 installed on your operating system of choice.
+In order to install this package you need at lease Node version 22 installed on your operating system of choice.
 
 Then you need a DynamoDB table set up in your region of choice with the structure matching:
 

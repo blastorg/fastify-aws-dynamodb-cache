@@ -13,6 +13,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "declaration": true /* Generate .d.ts files for every TypeScript or JavaScript file inside your project. */
   },
-  "extends": "@tsconfig/node18/tsconfig.json",
+  "extends": "@tsconfig/node22/tsconfig.json",
   "exclude": ["node_modules", "lib", "tests", "local_testing"]
 }

@@ -1,5 +1,6 @@
 import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { onRequestHookHandler, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyRequest, FastifyReply } from "fastify";
+import { onRequestAsyncHookHandler } from "fastify/types/hooks";
 
 interface CreateOnRequestHookOptions {
   dynamoClient: DynamoDBClient;
@@ -10,7 +11,7 @@ export const createOnRequestHook = ({
   dynamoClient,
   tableName,
 }: CreateOnRequestHookOptions) => {
-  const onRequestHook: onRequestHookHandler = async (
+  const onRequestHook: onRequestAsyncHookHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
   ) => {
@@ -42,8 +43,6 @@ export const createOnRequestHook = ({
       request.log.error(error, "Cache query error");
       reply.header("x-cache", "miss");
     }
-
-    return;
   };
 
   return onRequestHook;

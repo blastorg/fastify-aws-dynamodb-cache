@@ -12,7 +12,7 @@ export interface PluginOptions {
   disableCache?: boolean;
 }
 
-export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
+export const dynamodbCache: FastifyPluginAsync<PluginOptions> = (
   fastify,
   opts
 ) => {
@@ -40,26 +40,25 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = async (
           routeOptions.config.cache.ttlSeconds || opts.defaultTTLSeconds, // Defaults to "defaultTTLSeconds" which is specified when registering the plugin
       });
 
-      if (!routeOptions.onRequest) {
+      if (!Array.isArray(routeOptions.onRequest)) {
+        if (routeOptions.onRequest) {
+          routeOptions.onRequest = [routeOptions.onRequest];
+        }
+
         routeOptions.onRequest = [onRequestHook];
       }
-      if (!routeOptions.onSend) {
+
+      if (!Array.isArray(routeOptions.onSend)) {
+        if (routeOptions.onSend) {
+          routeOptions.onSend = [routeOptions.onSend];
+        }
+
         routeOptions.onSend = [onSendHook];
-      }
-
-      if (Array.isArray(routeOptions.onRequest)) {
-        routeOptions.onRequest.push(onRequestHook);
-      } else {
-        routeOptions.onRequest = [routeOptions.onRequest, onRequestHook];
-      }
-
-      if (Array.isArray(routeOptions.onSend)) {
-        routeOptions.onSend.push(onSendHook);
-      } else {
-        routeOptions.onSend = [routeOptions.onSend, onSendHook];
       }
     }
   });
+
+  return Promise.resolve();
 };
 
 declare module "fastify" {
@@ -72,6 +71,6 @@ declare module "fastify" {
 }
 
 export default fastifyPlugin(dynamodbCache, {
-  fastify: "4.x",
+  fastify: "5.x",
   name: "fastify-aws-dynamodb-cache",
 });

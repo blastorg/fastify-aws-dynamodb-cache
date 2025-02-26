@@ -9,10 +9,10 @@ jobs:
   install-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
       - run: npm ci
       - run: npm run lint
       - run: npm run test
@@ -23,11 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     name: "Create a new release & update changelog using semantic-release"
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - run: npm ci
+          node-version: "22"
+      - run: npm ci --ignore-scripts
       - run: npm run build
       - name: semantic-release
         run: npx semantic-release
@@ -44,17 +44,17 @@ jobs:
     runs-on: ubuntu-latest
     name: "Releases package to Github Packages registry"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-tags: true
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           registry-url: https://npm.pkg.github.com/
           scope: "@blastorg"
       - run: npm ci
       - run: npm run build
-      - run: npm version ${{ needs.release.outputs.new-release-version }} --no-git-tag-version --no-commit-hooks
+      - run: npm version ${{ needs.release.outputs.new-release-version }} --no-git-tag-version --no-commit-hooks --allow-same-version
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -65,17 +65,17 @@ jobs:
     runs-on: ubuntu-latest
     name: "Releases package to NPM registry"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-tags: true
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           registry-url: https://registry.npmjs.org/
           scope: "@blastorg"
       - run: npm ci
       - run: npm run build
-      - run: npm version ${{ needs.release.outputs.new-release-version }} --no-git-tag-version --no-commit-hooks
+      - run: npm version ${{ needs.release.outputs.new-release-version }} --no-git-tag-version --no-commit-hooks --allow-same-version
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPMJS_READWRITE_TOKEN}}

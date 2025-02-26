@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.1.2...v2.0.0) (2025-02-26)
+
+
+### Features
+
+* upgrade project dependencies, nodejs version and fastify ([2717b12](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/2717b1270b08af025e3a373641920ce37bf2a954))
+
+
+### BREAKING CHANGES
+
+* Min fastify is version set to 5
+
 ## [1.1.2](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.1.1...v1.1.2) (2024-03-06)
 
 

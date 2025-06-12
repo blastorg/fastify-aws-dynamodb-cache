@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v2.0.0...v2.1.0) (2025-06-12)
+
+
+### Features
+
+* add ability to bypass cache ([2a0cf63](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/2a0cf63b8a594df427c8d2f9db47dde661ce2695))
+
 # [2.0.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v1.1.2...v2.0.0) (2025-02-26)
 
 

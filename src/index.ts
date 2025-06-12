@@ -4,15 +4,50 @@ import fastifyPlugin from "fastify-plugin";
 import { createOnRequestHook } from "./hooks/onRequest";
 import { createOnSendHook } from "./hooks/onSend";
 
-export interface PluginOptions {
+/**
+ * Plugin options for fastify-aws-dynamodb-cache.
+ *
+ * @property {string} dynamoDbRegion - AWS region for DynamoDB client configuration.
+ * @property {string} [dynamoDbAddress] - Optional custom endpoint (useful for local development/testing).
+ * @property {string} tableName - DynamoDB table name used for storing cache entries.
+ * @property {number} defaultTTLSeconds - Global default TTL (in seconds) for all cache entries.
+ * @property {boolean} [disableCache=false] - If true, disables caching plugin-wide.
+ * @property {string} [passthroughQueryParam] - If defined, this query parameter will bypass cache when present in a request.
+ */
+export interface DynamodbCachePluginOptions {
   dynamoDbRegion: string;
   dynamoDbAddress?: string;
   tableName: string;
   defaultTTLSeconds: number;
   disableCache?: boolean;
+  passthroughQueryParam?: string;
 }
 
-export const dynamodbCache: FastifyPluginAsync<PluginOptions> = (
+/**
+ * Fastify plugin for caching responses in DynamoDB.
+ *
+ * Adds support for per-route caching via a shared DynamoDB table.
+ *
+ * Use route-level `config.cache` to control TTL and caching behavior:
+ *
+ * @example
+ * ```ts
+ * fastify.get('/my-route', {
+ *   config: {
+ *     cache: {
+ *       cacheEnabled: true,
+ *       ttlSeconds: 120
+ *     }
+ *   }
+ * }, async (req, reply) => {
+ *   return { hello: 'world' };
+ * });
+ * ```
+ *
+ * @param fastify - Fastify instance
+ * @param opts - Plugin options for DynamoDB caching
+ */
+export const dynamodbCache: FastifyPluginAsync<DynamodbCachePluginOptions> = (
   fastify,
   opts
 ) => {
@@ -31,6 +66,7 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = (
       const onRequestHook = createOnRequestHook({
         dynamoClient,
         tableName: opts.tableName,
+        passthroughQueryParam: opts.passthroughQueryParam,
       });
 
       const onSendHook = createOnSendHook({
@@ -63,8 +99,17 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = (
 
 declare module "fastify" {
   interface FastifyContextConfig {
+    /**
+     * Route-specific cache configuration.
+     */
     cache?: {
+      /**
+       * Enable or disable cache for this route. Defaults to false.
+       */
       cacheEnabled?: boolean;
+      /**
+       * TTL in seconds for the cached response. Overrides global defaultTTLSeconds if set.
+       */
       ttlSeconds?: number;
     };
   }

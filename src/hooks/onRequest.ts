@@ -1,15 +1,18 @@
 import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { onRequestAsyncHookHandler } from "fastify/types/hooks";
+import { hasQueryParam } from "../helpers/hasQueryParams";
 
 interface CreateOnRequestHookOptions {
   dynamoClient: DynamoDBClient;
   tableName: string;
+  passthroughQueryParam?: string;
 }
 
 export const createOnRequestHook = ({
   dynamoClient,
   tableName,
+  passthroughQueryParam,
 }: CreateOnRequestHookOptions) => {
   const onRequestHook: onRequestAsyncHookHandler = async (
     request: FastifyRequest,
@@ -21,6 +24,14 @@ export const createOnRequestHook = ({
         path: { S: request.url },
       },
     });
+
+    if (
+      passthroughQueryParam &&
+      hasQueryParam(request.query, passthroughQueryParam)
+    ) {
+      reply.header("x-cache", "ignored");
+      return;
+    }
 
     try {
       const { Item } = await dynamoClient.send(command);

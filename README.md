@@ -41,6 +41,7 @@ const fastify = Fastify().register(dynamodbCache, {
   tableName: "fastify-dynamodb-cache", // DynamoDB table name
   defaultTTLSeconds: 30, // Default TTL (seconds), which would be used if no TTL is specified on the endpoint.
   disableCache: true, // Optional! If you want to disable caching from being set on endpoints, you can set this to true. Set it to false or leave it empty to enable cache.
+  passthroughQueryParam: "_t", // Optional! If you want to define a query parameter for all endpoints, which will be used to bypass the cache (will set 'x-cache: ignored').
 });
 
 fastify.get(

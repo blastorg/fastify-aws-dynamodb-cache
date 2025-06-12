@@ -10,6 +10,7 @@ export interface PluginOptions {
   tableName: string;
   defaultTTLSeconds: number;
   disableCache?: boolean;
+  passthroughQueryParam?: string;
 }
 
 export const dynamodbCache: FastifyPluginAsync<PluginOptions> = (
@@ -31,6 +32,7 @@ export const dynamodbCache: FastifyPluginAsync<PluginOptions> = (
       const onRequestHook = createOnRequestHook({
         dynamoClient,
         tableName: opts.tableName,
+        passthroughQueryParam: opts.passthroughQueryParam,
       });
 
       const onSendHook = createOnSendHook({

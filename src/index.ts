@@ -76,19 +76,18 @@ export const dynamodbCache: FastifyPluginAsync<DynamodbCachePluginOptions> = (
           routeOptions.config.cache.ttlSeconds || opts.defaultTTLSeconds, // Defaults to "defaultTTLSeconds" which is specified when registering the plugin
       });
 
-      if (!Array.isArray(routeOptions.onRequest)) {
-        if (routeOptions.onRequest) {
-          routeOptions.onRequest = [routeOptions.onRequest];
-        }
-
+      if (Array.isArray(routeOptions.onRequest)) {
+        routeOptions.onRequest = [
+          ...(routeOptions.onRequest || []),
+          onRequestHook,
+        ];
+      } else {
         routeOptions.onRequest = [onRequestHook];
       }
 
-      if (!Array.isArray(routeOptions.onSend)) {
-        if (routeOptions.onSend) {
-          routeOptions.onSend = [routeOptions.onSend];
-        }
-
+      if (Array.isArray(routeOptions.onSend)) {
+        routeOptions.onSend = [...(routeOptions.onSend || []), onSendHook];
+      } else {
         routeOptions.onSend = [onSendHook];
       }
     }

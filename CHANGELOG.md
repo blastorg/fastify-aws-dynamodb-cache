@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v2.1.0...v2.1.1) (2025-11-03)
+
+
+### Bug Fixes
+
+* **plugin:** fixes adding hooks to array when already existing hooks ([54847bd](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/54847bda0cb7be06f6b40863c520ff11268ea75b))
+
 # [2.1.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v2.0.0...v2.1.0) (2025-06-12)
 
 

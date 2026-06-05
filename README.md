@@ -31,6 +31,12 @@ npm install @blastorg/fastify-aws-dynamodb-cache
 
 This packages helps you cache your API response in DynamoDB, which allows your lambda executions to all have access to the same cached responses.
 
+> ⚠️ **NOTICE — BREAKING CHANGE:** When a request URL exceeds `hashThresholdBytes` (default `2048`)
+> the cache key is hashed instead of using the raw URL. This changes the DynamoDB partition key for
+> any route with URLs over that size, so their previously-cached entries are orphaned and repopulate
+> on the next request. No action is required. Adjust `hashThresholdBytes` to change the size at which
+> this kicks in.
+
 ```ts
 import Fastify from "fastify";
 import { dynamodbCache } from "@blastorg/fastify-aws-dynamodb-cache";
@@ -42,6 +48,7 @@ const fastify = Fastify().register(dynamodbCache, {
   defaultTTLSeconds: 30, // Default TTL (seconds), which would be used if no TTL is specified on the endpoint.
   disableCache: true, // Optional! If you want to disable caching from being set on endpoints, you can set this to true. Set it to false or leave it empty to enable cache.
   passthroughQueryParam: "_t", // Optional! If you want to define a query parameter for all endpoints, which will be used to bypass the cache (will set 'x-cache: ignored').
+  hashThresholdBytes: 2048, // Optional! Byte size above which a cache key is hashed automatically. Defaults to 2048 (DynamoDB's hash key limit).
 });
 
 fastify.get(
@@ -51,6 +58,7 @@ fastify.get(
       cache: {
         cacheEnabled: true, // Set to true if endpoint responses should be cached. If you don't want to cache responses set it to false, or don't specify it.
         ttlSeconds: 10, // Optional! TTL on the cached value
+        hashKey: true, // Optional! Force hashing of this route's cache key regardless of its size. Keys are also hashed automatically when they exceed hashThresholdBytes.
       },
     },
     schema: {},

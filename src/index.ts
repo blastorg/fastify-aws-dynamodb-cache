@@ -13,6 +13,7 @@ import { createOnSendHook } from "./hooks/onSend";
  * @property {number} defaultTTLSeconds - Global default TTL (in seconds) for all cache entries.
  * @property {boolean} [disableCache=false] - If true, disables caching plugin-wide.
  * @property {string} [passthroughQueryParam] - If defined, this query parameter will bypass cache when present in a request.
+ * @property {number} [hashThresholdBytes=2048] - Byte size above which a cache key is hashed automatically, as a safety net against DynamoDB's 2048-byte hash key limit.
  */
 export interface DynamodbCachePluginOptions {
   dynamoDbRegion: string;
@@ -21,6 +22,7 @@ export interface DynamodbCachePluginOptions {
   defaultTTLSeconds: number;
   disableCache?: boolean;
   passthroughQueryParam?: string;
+  hashThresholdBytes?: number;
 }
 
 /**
@@ -67,6 +69,8 @@ export const dynamodbCache: FastifyPluginAsync<DynamodbCachePluginOptions> = (
         dynamoClient,
         tableName: opts.tableName,
         passthroughQueryParam: opts.passthroughQueryParam,
+        hashKey: routeOptions.config.cache.hashKey,
+        hashThresholdBytes: opts.hashThresholdBytes,
       });
 
       const onSendHook = createOnSendHook({
@@ -74,6 +78,8 @@ export const dynamodbCache: FastifyPluginAsync<DynamodbCachePluginOptions> = (
         tableName: opts.tableName,
         ttlSeconds:
           routeOptions.config.cache.ttlSeconds || opts.defaultTTLSeconds, // Defaults to "defaultTTLSeconds" which is specified when registering the plugin
+        hashKey: routeOptions.config.cache.hashKey,
+        hashThresholdBytes: opts.hashThresholdBytes,
       });
 
       if (Array.isArray(routeOptions.onRequest)) {
@@ -110,6 +116,12 @@ declare module "fastify" {
        * TTL in seconds for the cached response. Overrides global defaultTTLSeconds if set.
        */
       ttlSeconds?: number;
+      /**
+       * Force hashing of this route's cache key regardless of its size. Keys
+       * are also hashed automatically when they exceed the plugin's
+       * hashThresholdBytes.
+       */
+      hashKey?: boolean;
     };
   }
 }

@@ -2,26 +2,33 @@ import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { onRequestAsyncHookHandler } from "fastify/types/hooks";
 import { hasQueryParam } from "../helpers/hasQueryParams";
+import { buildCacheKey } from "../helpers/buildCacheKey";
 
 interface CreateOnRequestHookOptions {
   dynamoClient: DynamoDBClient;
   tableName: string;
   passthroughQueryParam?: string;
+  hashKey?: boolean;
+  hashThresholdBytes?: number;
 }
 
 export const createOnRequestHook = ({
   dynamoClient,
   tableName,
   passthroughQueryParam,
+  hashKey,
+  hashThresholdBytes,
 }: CreateOnRequestHookOptions) => {
   const onRequestHook: onRequestAsyncHookHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
   ) => {
+    const { key } = buildCacheKey(request.url, { hashKey, hashThresholdBytes });
+
     const command = new GetItemCommand({
       TableName: tableName,
       Key: {
-        path: { S: request.url },
+        path: { S: key },
       },
     });
 

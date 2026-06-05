@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v3.0.0...v3.0.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* publish missing release to npm registry ([6119354](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/61193541cf1c22f3ca5050abe1df4a7323d6363e))
+
 # [3.0.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v2.1.1...v3.0.0) (2026-06-05)
 
 

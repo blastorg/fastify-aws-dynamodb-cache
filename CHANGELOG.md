@@ -1,3 +1,13 @@
+# [3.0.0](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v2.1.1...v3.0.0) (2026-06-05)
+
+
+* feat(cache)!: hash keys over byte limit to avoid DynamoDB 2048 error ([34339d8](https://github.com/blastorg/fastify-aws-dynamodb-cache/commit/34339d841a3a3cb545cf120366db65f4f1259391))
+
+
+### BREAKING CHANGES
+
+* URLs over hashThresholdBytes now use a hashed cache key, orphaning old entries.
+
 ## [2.1.1](https://github.com/blastorg/fastify-aws-dynamodb-cache/compare/v2.1.0...v2.1.1) (2025-11-03)
 
 

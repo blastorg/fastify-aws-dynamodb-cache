@@ -5,8 +5,8 @@ on:
     branches:
       - "main"
 
+# Minimal default for all jobs; jobs that need more elevate below.
 permissions:
-  id-token: write # Required for OIDC
   contents: read
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
       - run: npm ci
       - run: npm run lint
       - run: npm run test
@@ -26,11 +26,15 @@ jobs:
     needs: install-and-test
     runs-on: ubuntu-latest
     name: "Create a new release & update changelog using semantic-release"
+    permissions:
+      contents: write # push the release commit + tag to main
+      issues: write # @semantic-release/github fail/success issues
+      pull-requests: write # @semantic-release/github PR comments
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
       - run: npm ci --ignore-scripts
       - run: npm run build
       - name: semantic-release
@@ -47,13 +51,16 @@ jobs:
     if: ${{ contains(needs.release.outputs.new-release-published, 'true') }}
     runs-on: ubuntu-latest
     name: "Releases package to Github Packages registry"
+    permissions:
+      contents: read
+      packages: write # publish to GitHub Packages
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-tags: true
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://npm.pkg.github.com/
           scope: "@blastorg"
       - run: npm ci
@@ -68,13 +75,16 @@ jobs:
     if: ${{ contains(needs.release.outputs.new-release-published, 'true') }}
     runs-on: ubuntu-latest
     name: "Releases package to NPM registry"
+    permissions:
+      contents: read
+      id-token: write # OIDC for npm trusted publishing
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-tags: true
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org/
           scope: "@blastorg"
           package-manager-cache: false
